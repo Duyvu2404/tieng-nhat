@@ -1,0 +1,1017 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nhập từ vựng tiếng Nhật (không trùng)</title>
+  <style>
+    :root{
+      --nen:#0b1220;
+      --nen2:#0f1a2f;
+      --khung:#1b2a49;
+      --chu:#e9f0ff;
+      --chu2:#b9c7ea;
+      --nhan:#7aa2ff;
+      --do:#ff6b6b;
+      --vang:#ffd166;
+      --xanh:#2dd4bf;
+      --bong: 0 10px 30px rgba(0,0,0,.35);
+      --bo: 16px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans JP", Arial, sans-serif;
+      background: radial-gradient(1000px 700px at 20% 10%, #162a55 0%, transparent 55%),
+                  radial-gradient(1000px 700px at 90% 30%, #1a3b5a 0%, transparent 55%),
+                  var(--nen);
+      color:var(--chu);
+    }
+    header{
+      padding:22px 18px 14px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    h1{
+      margin:0 0 6px 0;
+      font-size: 20px;
+      letter-spacing: .2px;
+    }
+    .mo-ta{
+      margin:0;
+      color:var(--chu2);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+    .khung{
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 14px 18px 28px;
+      display:grid;
+      grid-template-columns: 1.25fr .85fr;
+      gap: 14px;
+    }
+    @media (max-width: 980px){
+      .khung{grid-template-columns:1fr}
+    }
+    .the{
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--bo);
+      box-shadow: var(--bong);
+      overflow:hidden;
+    }
+    .the > .tieu-de{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding: 12px 14px;
+      background: rgba(255,255,255,.03);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .tieu-de h2{
+      margin:0;
+      font-size: 14px;
+      letter-spacing:.2px;
+      color: var(--chu);
+    }
+    .tieu-de .phu{
+      margin:0;
+      font-size: 12px;
+      color: var(--chu2);
+      white-space:nowrap;
+    }
+    .noi-dung{padding: 14px}
+    .hang{
+      display:flex;
+      gap:10px;
+      align-items: stretch;
+      flex-wrap:wrap;
+    }
+    .o{
+      flex: 1 1 320px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    label{
+      font-size: 12px;
+      color: var(--chu2);
+    }
+    input[type="text"], input[type="number"], textarea{
+      width:100%;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.25);
+      color: var(--chu);
+      padding: 10px 12px;
+      outline: none;
+    }
+    input[type="number"]{max-width:140px}
+    textarea{min-height:110px; resize: vertical; line-height:1.4}
+    input::placeholder, textarea::placeholder{color: rgba(233,240,255,.45)}
+    .nut{
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: var(--chu);
+      padding: 10px 12px;
+      border-radius: 12px;
+      cursor:pointer;
+      transition: transform .06s ease, background .15s ease, border-color .15s ease;
+      user-select:none;
+      font-weight: 600;
+      letter-spacing:.15px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      white-space:nowrap;
+    }
+    .nut:hover{background: rgba(255,255,255,.10); border-color: rgba(255,255,255,.22)}
+    .nut:active{transform: translateY(1px)}
+    .nut-nhan{background: rgba(122,162,255,.18); border-color: rgba(122,162,255,.45)}
+    .nut-nhan:hover{background: rgba(122,162,255,.24)}
+    .nut-xanh{background: rgba(45,212,191,.14); border-color: rgba(45,212,191,.45)}
+    .nut-xanh:hover{background: rgba(45,212,191,.20)}
+    .nut-do{background: rgba(255,107,107,.14); border-color: rgba(255,107,107,.45)}
+    .nut-do:hover{background: rgba(255,107,107,.20)}
+    .nut-vang{background: rgba(255,209,102,.14); border-color: rgba(255,209,102,.45)}
+    .nut-vang:hover{background: rgba(255,209,102,.20)}
+    .nhom-nut{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:10px;
+    }
+    .thong-bao{
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.20);
+      color: var(--chu2);
+      font-size: 12px;
+      line-height:1.35;
+      min-height: 42px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .cham{
+      width:10px; height:10px; border-radius: 999px;
+      background: rgba(255,255,255,.25);
+      flex:0 0 auto;
+    }
+    .cham.xanh{background: rgba(45,212,191,.85)}
+    .cham.vang{background: rgba(255,209,102,.9)}
+    .cham.do{background: rgba(255,107,107,.9)}
+    .bang{
+      width:100%;
+      border-collapse: collapse;
+      overflow:hidden;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+      margin-top: 12px;
+    }
+    .bang th, .bang td{
+      padding: 10px 10px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      vertical-align: middle;
+      font-size: 13px;
+    }
+    .bang th{
+      text-align:left;
+      color: var(--chu2);
+      font-weight: 700;
+      background: rgba(255,255,255,.03);
+      white-space:nowrap;
+    }
+    .bang tr:last-child td{border-bottom:none}
+    .hang-tu{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .tu{
+      font-weight: 700;
+      letter-spacing:.2px;
+      overflow:hidden;
+      text-overflow: ellipsis;
+      white-space:nowrap;
+      max-width: 100%;
+    }
+    .so{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      white-space:nowrap;
+    }
+    .so input{
+      width: 90px;
+      padding: 8px 10px;
+      border-radius: 10px;
+    }
+    .nut-mini{
+      padding: 7px 10px;
+      border-radius: 10px;
+      font-weight: 800;
+      min-width: 38px;
+    }
+    .nut-link{
+      background: transparent;
+      border-color: rgba(255,255,255,.18);
+    }
+    .tom-tat{
+      margin-top: 10px;
+      color: var(--chu2);
+      font-size: 12px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.18);
+      padding: 8px 10px;
+      border-radius: 999px;
+      white-space:nowrap;
+    }
+    .chip b{color: var(--chu)}
+    .lichsu{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .dot{
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+      border-radius: 14px;
+      padding: 12px;
+    }
+    .dot .tren{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:flex-start;
+    }
+    .dot .ten{
+      font-weight: 800;
+      font-size: 13px;
+      margin:0;
+    }
+    .dot .nho{
+      margin: 2px 0 0;
+      color: var(--chu2);
+      font-size: 12px;
+      line-height:1.35;
+    }
+    .dot .nut-dot{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      justify-content:flex-end;
+    }
+    .note{
+      margin-top: 10px;
+      font-size: 12px;
+      color: rgba(233,240,255,.58);
+      line-height: 1.35;
+    }
+
+    /* Modal */
+    .modal-nen{
+      position:fixed;
+      inset:0;
+      background: rgba(0,0,0,.55);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 18px;
+      z-index: 50;
+    }
+    .modal{
+      width: min(900px, 100%);
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 18px;
+      box-shadow: var(--bong);
+      overflow:hidden;
+    }
+    .modal .dau{
+      padding: 12px 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      border-bottom: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+    }
+    .modal .dau .tt{
+      margin:0;
+      font-size: 14px;
+      font-weight: 900;
+    }
+    .modal .than{
+      padding: 14px;
+    }
+    .modal .dong{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom: 10px;
+      color: var(--chu2);
+      font-size: 12px;
+    }
+    .modal .dong .chip{padding:7px 10px}
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Hệ thống nhập từ JLPT</h1>
+    <p class="mo-ta">
+      Danh sách hiển thị <b>mỗi từ 1 dòng</b> + <b>số lượng</b>. Khi bấm <b>Sao chép</b> thì hệ thống tự sinh ra danh sách đã nhân số lượng.
+      Từ đã có trong <b>lịch sử</b> sẽ không được thêm lại.
+    </p>
+  </header>
+
+  <main class="khung">
+    <!-- Bên trái: Nhập + Danh sách hiện tại -->
+    <section class="the">
+      <div class="tieu-de">
+        <div>
+          <h2>Đợt hiện tại</h2>
+          <p class="phu" id="phuHienTai">Chưa lưu</p>
+        </div>
+        <div class="phu">Dữ liệu lưu trong trình duyệt</div>
+      </div>
+
+      <div class="noi-dung">
+        <div class="hang">
+          <div class="o">
+            <label for="tuMoi">Nhập 1 từ</label>
+            <input id="tuMoi" type="text" placeholder="Ví dụ: 勉強 / べんきょう / カタカナ ..." autocomplete="off" />
+          </div>
+          <div class="o" style="flex:0 0 auto; min-width:160px;">
+            <label for="soLuongMoi">Số lượng</label>
+            <input id="soLuongMoi" type="number" min="1" step="1" value="1" />
+          </div>
+          <div class="o" style="flex:0 0 auto; min-width:160px; justify-content:flex-end;">
+            <label>&nbsp;</label>
+            <button class="nut nut-nhan" id="btnThem">Thêm</button>
+          </div>
+        </div>
+
+        <div class="hang" style="margin-top:10px;">
+          <div class="o">
+            <label for="nhapNhanh">Nhập nhanh nhiều dòng (mỗi dòng 1 từ)</label>
+            <textarea id="nhapNhanh" placeholder="Dán danh sách vào đây..."></textarea>
+          </div>
+          <div class="o" style="flex:0 0 240px;">
+            <label>&nbsp;</label>
+            <button class="nut nut-xanh" id="btnThemNhieu" style="width:100%;">Thêm nhiều</button>
+            <div style="height:10px"></div>
+            <button class="nut nut-link" id="btnXoaO" style="width:100%;">Xoá ô nhập nhanh</button>
+          </div>
+        </div>
+
+        <div class="nhom-nut">
+          <button class="nut nut-vang" id="btnTangTatCa">Tăng số lượng tất cả (+1)</button>
+          <button class="nut nut-xanh" id="btnSaoChepHienTai">Sao chép danh sách hiện tại</button>
+          <button class="nut nut-nhan" id="btnLuuDot">Lưu thành đợt lịch sử</button>
+          <button class="nut nut-do" id="btnXoaHienTai">Xoá danh sách hiện tại</button>
+        </div>
+
+        <div class="thong-bao" id="thongBao">
+          <span class="cham"></span>
+          <span>Nhập từ rồi bấm <b>Thêm</b>. Nếu bạn nhập trùng trong đợt hiện tại thì hệ thống sẽ <b>tự cộng số lượng</b>. Trùng với lịch sử thì <b>bỏ qua</b>.</span>
+        </div>
+
+        <div class="tom-tat">
+          <div class="chip">Số từ khác nhau: <b id="soTu">0</b></div>
+          <div class="chip">Tổng dòng khi sao chép: <b id="tongDong">0</b></div>
+        </div>
+
+        <table class="bang" id="bangHienTai">
+          <thead>
+            <tr>
+              <th style="width:55%;">Từ vựng</th>
+              <th style="width:25%;">Số lượng</th>
+              <th style="width:20%;">Thao tác</th>
+            </tr>
+          </thead>
+          <tbody id="dsHienTai"></tbody>
+        </table>
+
+        <p class="note">
+          Gợi ý: Bạn có thể bấm Enter trong ô “Nhập 1 từ” để thêm nhanh. Dữ liệu được lưu lại ngay cả khi bạn tắt tab (trừ khi bạn xoá lịch sử trình duyệt).
+        </p>
+      </div>
+    </section>
+
+    <!-- Bên phải: Lịch sử -->
+    <section class="the">
+      <div class="tieu-de">
+        <h2>Lịch sử các đợt</h2>
+        <div class="phu">
+          <button class="nut nut-do" id="btnXoaLichSu">Xoá toàn bộ lịch sử</button>
+        </div>
+      </div>
+
+      <div class="noi-dung">
+        <div class="lichsu" id="khungLichSu"></div>
+        <p class="note" id="noteLichSu"></p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal xem đợt -->
+  <div class="modal-nen" id="modalNen" role="dialog" aria-modal="true">
+    <div class="modal">
+      <div class="dau">
+        <p class="tt" id="modalTieuDe">Chi tiết đợt</p>
+        <button class="nut nut-do" id="btnDongModal">Đóng</button>
+      </div>
+      <div class="than">
+        <div class="dong">
+          <div class="chip">Số từ: <b id="modalSoTu">0</b></div>
+          <div class="chip">Tổng dòng khi sao chép: <b id="modalTongDong">0</b></div>
+          <button class="nut nut-xanh" id="btnSaoChepDot">Sao chép đợt này</button>
+        </div>
+
+        <table class="bang">
+          <thead>
+            <tr>
+              <th style="width:65%;">Từ vựng</th>
+              <th style="width:35%;">Số lượng</th>
+            </tr>
+          </thead>
+          <tbody id="modalBang"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ====== Lưu / tải dữ liệu ======
+    const KHOA_LUU = "nhat_tu_vung_khong_trung_v1";
+
+    /** @type {{ id:string, taoLuc:number, items:{tu:string,khoa:string,soLuong:number}[] }[]} */
+    let lichSu = [];
+    /** @type {{tu:string,khoa:string,soLuong:number}[]} */
+    let hienTai = [];
+
+    const elTuMoi = document.getElementById("tuMoi");
+    const elSoLuongMoi = document.getElementById("soLuongMoi");
+    const elNhapNhanh = document.getElementById("nhapNhanh");
+
+    const elDsHienTai = document.getElementById("dsHienTai");
+    const elSoTu = document.getElementById("soTu");
+    const elTongDong = document.getElementById("tongDong");
+    const elThongBao = document.getElementById("thongBao");
+    const elCham = elThongBao.querySelector(".cham");
+
+    const elKhungLichSu = document.getElementById("khungLichSu");
+    const elNoteLichSu = document.getElementById("noteLichSu");
+    const elPhuHienTai = document.getElementById("phuHienTai");
+
+    const elModalNen = document.getElementById("modalNen");
+    const elModalTieuDe = document.getElementById("modalTieuDe");
+    const elModalBang = document.getElementById("modalBang");
+    const elModalSoTu = document.getElementById("modalSoTu");
+    const elModalTongDong = document.getElementById("modalTongDong");
+    const btnSaoChepDot = document.getElementById("btnSaoChepDot");
+
+    let dotDangXem = null; // {id, taoLuc, items}
+
+    function chuanHoaTu(s){
+      return (s ?? "")
+        .normalize("NFKC")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function taiDuLieu(){
+      try{
+        const raw = localStorage.getItem(KHOA_LUU);
+        if(!raw) return;
+        const obj = JSON.parse(raw);
+        lichSu = Array.isArray(obj?.lichSu) ? obj.lichSu : [];
+        hienTai = Array.isArray(obj?.hienTai) ? obj.hienTai : [];
+      }catch(e){
+        lichSu = [];
+        hienTai = [];
+      }
+      // Làm sạch lại (tránh lỗi dữ liệu)
+      lamSachDuLieu();
+    }
+
+    function luuDuLieu(){
+      const obj = { lichSu, hienTai };
+      localStorage.setItem(KHOA_LUU, JSON.stringify(obj));
+    }
+
+    function lamSachDuLieu(){
+      // Làm sạch lịch sử: bỏ item rỗng, chuẩn hoá khoá
+      lichSu = (lichSu || [])
+        .filter(d => d && Array.isArray(d.items))
+        .map(d => ({
+          id: String(d.id || taoId()),
+          taoLuc: Number(d.taoLuc || Date.now()),
+          items: (d.items || [])
+            .map(it => {
+              const tu = chuanHoaTu(it?.tu || "");
+              const khoa = chuanHoaTu(it?.khoa || tu);
+              const soLuong = Math.max(1, parseInt(it?.soLuong ?? 1, 10) || 1);
+              return tu ? { tu, khoa, soLuong } : null;
+            })
+            .filter(Boolean)
+        }));
+
+      // Làm sạch hiện tại + gộp trùng trong hiện tại
+      const map = new Map();
+      (hienTai || []).forEach(it => {
+        const tu = chuanHoaTu(it?.tu || "");
+        const khoa = chuanHoaTu(it?.khoa || tu);
+        const soLuong = Math.max(1, parseInt(it?.soLuong ?? 1, 10) || 1);
+        if(!tu) return;
+        if(map.has(khoa)){
+          map.get(khoa).soLuong += soLuong;
+        }else{
+          map.set(khoa, { tu, khoa, soLuong });
+        }
+      });
+      hienTai = Array.from(map.values());
+
+      // Đảm bảo hiện tại không trùng với lịch sử (nếu lỡ bị)
+      const tapLichSu = tapTuTrongLichSu();
+      hienTai = hienTai.filter(it => !tapLichSu.has(it.khoa));
+    }
+
+    function taoId(){
+      return "dot_" + Math.random().toString(16).slice(2) + "_" + Date.now().toString(16);
+    }
+
+    function dinhDangThoiGian(ms){
+      const d = new Date(ms);
+      const pad = (n)=>String(n).padStart(2,"0");
+      return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    }
+
+    function tapTuTrongLichSu(){
+      const set = new Set();
+      lichSu.forEach(dot => dot.items.forEach(it => set.add(it.khoa)));
+      return set;
+    }
+
+    function tongDong(items){
+      return items.reduce((a,it)=>a + (it.soLuong || 0), 0);
+    }
+
+    function thongBao(noiDung, loai="binh_thuong"){
+      // loai: binh_thuong | xanh | vang | do
+      elCham.className = "cham";
+      if(loai === "xanh") elCham.classList.add("xanh");
+      if(loai === "vang") elCham.classList.add("vang");
+      if(loai === "do") elCham.classList.add("do");
+      elThongBao.querySelector("span:nth-child(2)").innerHTML = noiDung;
+    }
+
+    // ====== Thêm từ ======
+    function themTuVaoHienTai(tuNhap, soLuongNhap){
+      const tu = chuanHoaTu(tuNhap);
+      const soLuong = Math.max(1, parseInt(soLuongNhap ?? 1, 10) || 1);
+      if(!tu){
+        thongBao("Không có gì để thêm.", "vang");
+        return { themMoi:0, congSoLuong:0, boQua:0 };
+      }
+
+      const khoa = chuanHoaTu(tu);
+
+      // Nếu trùng trong lịch sử -> bỏ qua
+      const tapLichSu = tapTuTrongLichSu();
+      if(tapLichSu.has(khoa)){
+        thongBao(`Từ <b>${escapeHtml(tu)}</b> đã có trong lịch sử nên bị bỏ qua.`, "do");
+        return { themMoi:0, congSoLuong:0, boQua:1 };
+      }
+
+      // Nếu đã có trong hiện tại -> cộng số lượng (không tạo dòng mới)
+      const idx = hienTai.findIndex(it => it.khoa === khoa);
+      if(idx >= 0){
+        hienTai[idx].soLuong += soLuong;
+        luuDuLieu();
+        veLai();
+        thongBao(`Từ <b>${escapeHtml(hienTai[idx].tu)}</b> đã có trong đợt hiện tại nên đã <b>cộng số lượng</b>.`, "xanh");
+        return { themMoi:0, congSoLuong:1, boQua:0 };
+      }
+
+      hienTai.unshift({ tu, khoa, soLuong });
+      luuDuLieu();
+      veLai();
+      thongBao(`Đã thêm <b>${escapeHtml(tu)}</b> (số lượng ${soLuong}).`, "xanh");
+      return { themMoi:1, congSoLuong:0, boQua:0 };
+    }
+
+    function themTuTuO1(){
+      const tu = elTuMoi.value;
+      const soLuong = elSoLuongMoi.value;
+      const kq = themTuVaoHienTai(tu, soLuong);
+      if(kq.themMoi || kq.congSoLuong){
+        elTuMoi.value = "";
+        elTuMoi.focus();
+        elSoLuongMoi.value = "1";
+      }
+    }
+
+    function themNhieu(){
+      const raw = elNhapNhanh.value || "";
+      const lines = raw.split(/\r?\n/).map(s => chuanHoaTu(s)).filter(Boolean);
+
+      if(lines.length === 0){
+        thongBao("Ô nhập nhanh đang trống.", "vang");
+        return;
+      }
+
+      const tapLichSu = tapTuTrongLichSu();
+      const mapTrongDot = new Map(hienTai.map(it => [it.khoa, it]));
+
+      let themMoi = 0, congSoLuong = 0, boQua = 0;
+
+      for(const line of lines){
+        const khoa = chuanHoaTu(line);
+        if(!khoa) continue;
+
+        if(tapLichSu.has(khoa)){
+          boQua++;
+          continue;
+        }
+        if(mapTrongDot.has(khoa)){
+          mapTrongDot.get(khoa).soLuong += 1;
+          congSoLuong++;
+          continue;
+        }
+        const it = { tu: line, khoa, soLuong: 1 };
+        hienTai.unshift(it);
+        mapTrongDot.set(khoa, it);
+        themMoi++;
+      }
+
+      luuDuLieu();
+      veLai();
+
+      let msg = `Đã xử lý <b>${lines.length}</b> dòng. `;
+      msg += `Thêm mới: <b>${themMoi}</b> — Cộng số lượng: <b>${congSoLuong}</b> — Bỏ qua (trùng lịch sử): <b>${boQua}</b>.`;
+      thongBao(msg, boQua ? "vang" : "xanh");
+    }
+
+    // ====== Hiển thị ======
+    function veLai(){
+      // Tóm tắt
+      elSoTu.textContent = String(hienTai.length);
+      elTongDong.textContent = String(tongDong(hienTai));
+
+      // Phụ đề hiện tại
+      elPhuHienTai.textContent = hienTai.length ? "Đang nhập" : "Trống";
+
+      // Bảng hiện tại
+      elDsHienTai.innerHTML = "";
+      if(hienTai.length === 0){
+        elDsHienTai.innerHTML = `<tr><td colspan="3" style="color:rgba(233,240,255,.55); font-size:12px;">Chưa có từ nào trong đợt hiện tại.</td></tr>`;
+      }else{
+        for(const it of hienTai){
+          const tr = document.createElement("tr");
+
+          const tdTu = document.createElement("td");
+          tdTu.innerHTML = `<div class="tu" title="${escapeHtml(it.tu)}">${escapeHtml(it.tu)}</div>`;
+
+          const tdSo = document.createElement("td");
+          tdSo.innerHTML = `
+            <div class="so">
+              <button class="nut nut-mini nut-link" data-hanhdong="giam" data-khoa="${escapeAttr(it.khoa)}">−</button>
+              <input type="number" min="1" step="1" value="${it.soLuong}" data-hanhdong="nhapso" data-khoa="${escapeAttr(it.khoa)}" />
+              <button class="nut nut-mini nut-link" data-hanhdong="tang" data-khoa="${escapeAttr(it.khoa)}">+</button>
+            </div>
+          `;
+
+          const tdTac = document.createElement("td");
+          tdTac.innerHTML = `
+            <div class="so" style="justify-content:flex-end;">
+              <button class="nut nut-mini nut-do" data-hanhdong="xoa" data-khoa="${escapeAttr(it.khoa)}">Xoá</button>
+            </div>
+          `;
+
+          tr.appendChild(tdTu);
+          tr.appendChild(tdSo);
+          tr.appendChild(tdTac);
+          elDsHienTai.appendChild(tr);
+        }
+      }
+
+      // Lịch sử
+      veLichSu();
+    }
+
+    function veLichSu(){
+      elKhungLichSu.innerHTML = "";
+
+      if(lichSu.length === 0){
+        elKhungLichSu.innerHTML = `
+          <div class="dot">
+            <p class="ten">Chưa có đợt nào</p>
+            <p class="nho">Khi bạn bấm “Lưu thành đợt lịch sử”, đợt sẽ xuất hiện ở đây.</p>
+          </div>
+        `;
+        elNoteLichSu.textContent = "";
+        return;
+      }
+
+      // mới nhất lên trên
+      const ds = [...lichSu].sort((a,b)=>b.taoLuc - a.taoLuc);
+
+      for(const dot of ds){
+        const soTu = dot.items.length;
+        const tong = tongDong(dot.items);
+        const div = document.createElement("div");
+        div.className = "dot";
+        div.innerHTML = `
+          <div class="tren">
+            <div>
+              <p class="ten">Đợt ${escapeHtml(dinhDangThoiGian(dot.taoLuc))}</p>
+              <p class="nho">Số từ: <b>${soTu}</b> — Tổng dòng khi sao chép: <b>${tong}</b></p>
+            </div>
+            <div class="nut-dot">
+              <button class="nut nut-mini nut-link" data-dot="${escapeAttr(dot.id)}" data-hanhdong="xem">Xem</button>
+              <button class="nut nut-mini nut-xanh" data-dot="${escapeAttr(dot.id)}" data-hanhdong="saochep">Sao chép</button>
+              <button class="nut nut-mini nut-do" data-dot="${escapeAttr(dot.id)}" data-hanhdong="xoadot">Xoá</button>
+            </div>
+          </div>
+        `;
+        elKhungLichSu.appendChild(div);
+      }
+
+      elNoteLichSu.textContent =
+        "Lưu ý: Từ đã nằm trong lịch sử sẽ không thể thêm lại vào các đợt sau (hệ thống tự chặn trùng).";
+    }
+
+    // ====== Sao chép ======
+    function taoChuoiSaoChep(items){
+      const lines = [];
+      for(const it of items){
+        for(let i=0;i<it.soLuong;i++){
+          lines.push(it.tu);
+        }
+      }
+      return lines.join("\n");
+    }
+
+    async function saoChepVanBan(text){
+      try{
+        await navigator.clipboard.writeText(text);
+        return true;
+      }catch(e){
+        // dự phòng
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        ta.style.position = "fixed";
+        ta.style.left = "-9999px";
+        ta.style.top = "0";
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        let ok = false;
+        try{ ok = document.execCommand("copy"); }catch(_){}
+        document.body.removeChild(ta);
+        return ok;
+      }
+    }
+
+    async function saoChepDanhSach(items, ten="Danh sách"){
+      if(!items || items.length === 0){
+        thongBao("Không có gì để sao chép.", "vang");
+        return;
+      }
+      const text = taoChuoiSaoChep(items);
+      const ok = await saoChepVanBan(text);
+      if(ok){
+        thongBao(`Đã sao chép <b>${escapeHtml(ten)}</b>. Tổng dòng đã sinh: <b>${text.split("\n").length}</b>.`, "xanh");
+      }else{
+        thongBao("Không sao chép được (trình duyệt chặn). Hãy thử lại hoặc đổi trình duyệt.", "do");
+      }
+    }
+
+    // ====== Lưu đợt ======
+    function luuThanhDot(){
+      if(hienTai.length === 0){
+        thongBao("Đợt hiện tại đang trống nên không thể lưu.", "vang");
+        return;
+      }
+
+      // chắc chắn không trùng lịch sử (đề phòng)
+      const tapLichSu = tapTuTrongLichSu();
+      const filtered = hienTai.filter(it => !tapLichSu.has(it.khoa));
+      if(filtered.length !== hienTai.length){
+        thongBao("Có vài từ trùng với lịch sử nên đã bị loại trước khi lưu.", "vang");
+      }
+
+      const dot = {
+        id: taoId(),
+        taoLuc: Date.now(),
+        items: filtered.map(it => ({ tu: it.tu, khoa: it.khoa, soLuong: it.soLuong }))
+      };
+      lichSu.push(dot);
+
+      // Xoá hiện tại để bắt đầu đợt mới
+      hienTai = [];
+      luuDuLieu();
+      veLai();
+
+      thongBao(`Đã lưu thành <b>đợt lịch sử</b> (${escapeHtml(dinhDangThoiGian(dot.taoLuc))}).`, "xanh");
+    }
+
+    // ====== Modal ======
+    function moModalXemDot(dot){
+      dotDangXem = dot;
+      elModalTieuDe.textContent = `Chi tiết đợt ${dinhDangThoiGian(dot.taoLuc)}`;
+      elModalSoTu.textContent = String(dot.items.length);
+      elModalTongDong.textContent = String(tongDong(dot.items));
+
+      elModalBang.innerHTML = "";
+      for(const it of dot.items){
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><div class="tu">${escapeHtml(it.tu)}</div></td>
+          <td style="color:var(--chu); font-weight:800;">${it.soLuong}</td>
+        `;
+        elModalBang.appendChild(tr);
+      }
+
+      elModalNen.style.display = "flex";
+    }
+
+    function dongModal(){
+      dotDangXem = null;
+      elModalNen.style.display = "none";
+    }
+
+    // ====== Sự kiện ======
+    document.getElementById("btnThem").addEventListener("click", themTuTuO1);
+    document.getElementById("btnThemNhieu").addEventListener("click", themNhieu);
+    document.getElementById("btnXoaO").addEventListener("click", () => {
+      elNhapNhanh.value = "";
+      thongBao("Đã xoá nội dung ô nhập nhanh.", "xanh");
+    });
+
+    elTuMoi.addEventListener("keydown", (e) => {
+      if(e.key === "Enter"){
+        e.preventDefault();
+        themTuTuO1();
+      }
+    });
+
+    // thao tác trong bảng hiện tại (tăng/giảm/xoá/nhập số)
+    elDsHienTai.addEventListener("click", (e) => {
+      const btn = e.target.closest("button");
+      if(!btn) return;
+      const hanh = btn.dataset.hanhdong;
+      const khoa = btn.dataset.khoa;
+      if(!hanh || !khoa) return;
+
+      const idx = hienTai.findIndex(it => it.khoa === khoa);
+      if(idx < 0) return;
+
+      if(hanh === "tang"){
+        hienTai[idx].soLuong += 1;
+      }else if(hanh === "giam"){
+        hienTai[idx].soLuong = Math.max(1, hienTai[idx].soLuong - 1);
+      }else if(hanh === "xoa"){
+        const ten = hienTai[idx].tu;
+        hienTai.splice(idx,1);
+        thongBao(`Đã xoá <b>${escapeHtml(ten)}</b> khỏi đợt hiện tại.`, "xanh");
+      }
+
+      luuDuLieu();
+      veLai();
+    });
+
+    elDsHienTai.addEventListener("change", (e) => {
+      const inp = e.target.closest('input[type="number"]');
+      if(!inp) return;
+      const khoa = inp.dataset.khoa;
+      if(!khoa) return;
+      const idx = hienTai.findIndex(it => it.khoa === khoa);
+      if(idx < 0) return;
+      const v = Math.max(1, parseInt(inp.value || "1", 10) || 1);
+      hienTai[idx].soLuong = v;
+      luuDuLieu();
+      veLai();
+    });
+
+    document.getElementById("btnTangTatCa").addEventListener("click", () => {
+      if(hienTai.length === 0){
+        thongBao("Đợt hiện tại đang trống.", "vang");
+        return;
+      }
+      hienTai.forEach(it => it.soLuong += 1);
+      luuDuLieu();
+      veLai();
+      thongBao("Đã tăng số lượng cho <b>tất cả</b> từ trong đợt hiện tại (+1).", "xanh");
+    });
+
+    document.getElementById("btnSaoChepHienTai").addEventListener("click", () => {
+      saoChepDanhSach(hienTai, "đợt hiện tại");
+    });
+
+    document.getElementById("btnLuuDot").addEventListener("click", luuThanhDot);
+
+    document.getElementById("btnXoaHienTai").addEventListener("click", () => {
+      if(hienTai.length === 0){
+        thongBao("Đợt hiện tại đang trống.", "vang");
+        return;
+      }
+      if(!confirm("Bạn chắc chắn muốn xoá toàn bộ danh sách của đợt hiện tại không?")) return;
+      hienTai = [];
+      luuDuLieu();
+      veLai();
+      thongBao("Đã xoá danh sách đợt hiện tại.", "xanh");
+    });
+
+    // Lịch sử: xem / sao chép / xoá đợt
+    elKhungLichSu.addEventListener("click", (e) => {
+      const btn = e.target.closest("button");
+      if(!btn) return;
+      const hanh = btn.dataset.hanhdong;
+      const idDot = btn.dataset.dot;
+      if(!hanh || !idDot) return;
+
+      const dot = lichSu.find(d => d.id === idDot);
+      if(!dot) return;
+
+      if(hanh === "xem"){
+        moModalXemDot(dot);
+      }else if(hanh === "saochep"){
+        saoChepDanhSach(dot.items, `đợt ${dinhDangThoiGian(dot.taoLuc)}`);
+      }else if(hanh === "xoadot"){
+        if(!confirm("Bạn chắc chắn muốn xoá đợt này không?")) return;
+        lichSu = lichSu.filter(d => d.id !== idDot);
+
+        // Sau khi xoá lịch sử, cần làm sạch hiện tại (đề phòng)
+        lamSachDuLieu();
+        luuDuLieu();
+        veLai();
+        thongBao("Đã xoá đợt khỏi lịch sử.", "xanh");
+      }
+    });
+
+    document.getElementById("btnXoaLichSu").addEventListener("click", () => {
+      if(lichSu.length === 0){
+        thongBao("Lịch sử đang trống.", "vang");
+        return;
+      }
+      if(!confirm("Bạn chắc chắn muốn xoá toàn bộ lịch sử không? (Không thể khôi phục)")) return;
+      lichSu = [];
+      lamSachDuLieu();
+      luuDuLieu();
+      veLai();
+      thongBao("Đã xoá toàn bộ lịch sử.", "xanh");
+    });
+
+    document.getElementById("btnDongModal").addEventListener("click", dongModal);
+    elModalNen.addEventListener("click", (e) => {
+      if(e.target === elModalNen) dongModal();
+    });
+    document.addEventListener("keydown", (e) => {
+      if(e.key === "Escape" && elModalNen.style.display === "flex"){
+        dongModal();
+      }
+    });
+    btnSaoChepDot.addEventListener("click", () => {
+      if(dotDangXem) saoChepDanhSach(dotDangXem.items, `đợt ${dinhDangThoiGian(dotDangXem.taoLuc)}`);
+    });
+
+    // ====== Tiện ích: escape ======
+    function escapeHtml(s){
+      return String(s)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+    function escapeAttr(s){ return escapeHtml(s); }
+
+    // ====== Khởi động ======
+    taiDuLieu();
+    veLai();
+  </script>
+</body>
+</html>
