@@ -189,12 +189,6 @@
       white-space:nowrap;
     }
     .bang tr:last-child td{border-bottom:none}
-    .hang-tu{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-    }
     .tu{
       font-weight: 700;
       letter-spacing:.2px;
@@ -296,6 +290,7 @@
       justify-content:center;
       padding: 18px;
       z-index: 50;
+      overflow: auto; /* ✅ cho phép cuộn nếu nội dung dài */
     }
     .modal{
       width: min(900px, 100%);
@@ -304,6 +299,11 @@
       border-radius: 18px;
       box-shadow: var(--bong);
       overflow:hidden;
+
+      /* ✅ giới hạn chiều cao để không bị “cắt” list dài */
+      max-height: calc(100vh - 36px);
+      display:flex;
+      flex-direction: column;
     }
     .modal .dau{
       padding: 12px 14px;
@@ -321,6 +321,8 @@
     }
     .modal .than{
       padding: 14px;
+      overflow: auto; /* ✅ phần thân cuộn */
+      min-height: 0;
     }
     .modal .dong{
       display:flex;
@@ -491,6 +493,7 @@
     const elModalSoTu = document.getElementById("modalSoTu");
     const elModalTongDong = document.getElementById("modalTongDong");
     const btnSaoChepDot = document.getElementById("btnSaoChepDot");
+    const btnDongModal = document.getElementById("btnDongModal");
 
     let dotDangXem = null; // {id, taoLuc, items}
 
@@ -512,7 +515,6 @@
         lichSu = [];
         hienTai = [];
       }
-      // Làm sạch lại (tránh lỗi dữ liệu)
       lamSachDuLieu();
     }
 
@@ -522,7 +524,6 @@
     }
 
     function lamSachDuLieu(){
-      // Làm sạch lịch sử: bỏ item rỗng, chuẩn hoá khoá
       lichSu = (lichSu || [])
         .filter(d => d && Array.isArray(d.items))
         .map(d => ({
@@ -538,7 +539,6 @@
             .filter(Boolean)
         }));
 
-      // Làm sạch hiện tại + gộp trùng trong hiện tại
       const map = new Map();
       (hienTai || []).forEach(it => {
         const tu = chuanHoaTu(it?.tu || "");
@@ -553,7 +553,6 @@
       });
       hienTai = Array.from(map.values());
 
-      // Đảm bảo hiện tại không trùng với lịch sử (nếu lỡ bị)
       const tapLichSu = tapTuTrongLichSu();
       hienTai = hienTai.filter(it => !tapLichSu.has(it.khoa));
     }
@@ -579,7 +578,6 @@
     }
 
     function thongBao(noiDung, loai="binh_thuong"){
-      // loai: binh_thuong | xanh | vang | do
       elCham.className = "cham";
       if(loai === "xanh") elCham.classList.add("xanh");
       if(loai === "vang") elCham.classList.add("vang");
@@ -598,14 +596,12 @@
 
       const khoa = chuanHoaTu(tu);
 
-      // Nếu trùng trong lịch sử -> bỏ qua
       const tapLichSu = tapTuTrongLichSu();
       if(tapLichSu.has(khoa)){
         thongBao(`Từ <b>${escapeHtml(tu)}</b> đã có trong lịch sử nên bị bỏ qua.`, "do");
         return { themMoi:0, congSoLuong:0, boQua:1 };
       }
 
-      // Nếu đã có trong hiện tại -> cộng số lượng (không tạo dòng mới)
       const idx = hienTai.findIndex(it => it.khoa === khoa);
       if(idx >= 0){
         hienTai[idx].soLuong += soLuong;
@@ -676,14 +672,11 @@
 
     // ====== Hiển thị ======
     function veLai(){
-      // Tóm tắt
       elSoTu.textContent = String(hienTai.length);
       elTongDong.textContent = String(tongDong(hienTai));
 
-      // Phụ đề hiện tại
       elPhuHienTai.textContent = hienTai.length ? "Đang nhập" : "Trống";
 
-      // Bảng hiện tại
       elDsHienTai.innerHTML = "";
       if(hienTai.length === 0){
         elDsHienTai.innerHTML = `<tr><td colspan="3" style="color:rgba(233,240,255,.55); font-size:12px;">Chưa có từ nào trong đợt hiện tại.</td></tr>`;
@@ -717,7 +710,6 @@
         }
       }
 
-      // Lịch sử
       veLichSu();
     }
 
@@ -735,7 +727,6 @@
         return;
       }
 
-      // mới nhất lên trên
       const ds = [...lichSu].sort((a,b)=>b.taoLuc - a.taoLuc);
 
       for(const dot of ds){
@@ -751,6 +742,7 @@
             </div>
             <div class="nut-dot">
               <button class="nut nut-mini nut-link" data-dot="${escapeAttr(dot.id)}" data-hanhdong="xem">Xem</button>
+              <button class="nut nut-mini nut-vang" data-dot="${escapeAttr(dot.id)}" data-hanhdong="sua">Sửa</button>
               <button class="nut nut-mini nut-xanh" data-dot="${escapeAttr(dot.id)}" data-hanhdong="saochep">Sao chép</button>
               <button class="nut nut-mini nut-do" data-dot="${escapeAttr(dot.id)}" data-hanhdong="xoadot">Xoá</button>
             </div>
@@ -779,7 +771,6 @@
         await navigator.clipboard.writeText(text);
         return true;
       }catch(e){
-        // dự phòng
         const ta = document.createElement("textarea");
         ta.value = text;
         ta.style.position = "fixed";
@@ -816,7 +807,6 @@
         return;
       }
 
-      // chắc chắn không trùng lịch sử (đề phòng)
       const tapLichSu = tapTuTrongLichSu();
       const filtered = hienTai.filter(it => !tapLichSu.has(it.khoa));
       if(filtered.length !== hienTai.length){
@@ -830,7 +820,6 @@
       };
       lichSu.push(dot);
 
-      // Xoá hiện tại để bắt đầu đợt mới
       hienTai = [];
       luuDuLieu();
       veLai();
@@ -849,13 +838,17 @@
       for(const it of dot.items){
         const tr = document.createElement("tr");
         tr.innerHTML = `
-          <td><div class="tu">${escapeHtml(it.tu)}</div></td>
+          <td><div class="tu" title="${escapeHtml(it.tu)}">${escapeHtml(it.tu)}</div></td>
           <td style="color:var(--chu); font-weight:800;">${it.soLuong}</td>
         `;
         elModalBang.appendChild(tr);
       }
 
       elModalNen.style.display = "flex";
+
+      // ✅ mở ra luôn ở đầu khi list dài
+      const than = elModalNen.querySelector(".than");
+      if(than) than.scrollTop = 0;
     }
 
     function dongModal(){
@@ -878,7 +871,6 @@
       }
     });
 
-    // thao tác trong bảng hiện tại (tăng/giảm/xoá/nhập số)
     elDsHienTai.addEventListener("click", (e) => {
       const btn = e.target.closest("button");
       if(!btn) return;
@@ -945,7 +937,7 @@
       thongBao("Đã xoá danh sách đợt hiện tại.", "xanh");
     });
 
-    // Lịch sử: xem / sao chép / xoá đợt
+    // Lịch sử: xem / sửa / sao chép / xoá đợt
     elKhungLichSu.addEventListener("click", (e) => {
       const btn = e.target.closest("button");
       if(!btn) return;
@@ -958,20 +950,37 @@
 
       if(hanh === "xem"){
         moModalXemDot(dot);
+      }else if(hanh === "sua"){
+        if(hienTai.length > 0){
+          if(!confirm("Đợt hiện tại đang có từ. Bấm OK sẽ gộp chung đợt lịch sử này vào đợt hiện tại. Bạn có muốn tiếp tục?")) return;
+        }
+
+        dot.items.forEach(it => {
+          const idx = hienTai.findIndex(x => x.khoa === it.khoa);
+          if(idx >= 0){
+            hienTai[idx].soLuong += it.soLuong;
+          } else {
+            hienTai.push({ tu: it.tu, khoa: it.khoa, soLuong: it.soLuong });
+          }
+        });
+
+        lichSu = lichSu.filter(d => d.id !== idDot);
+
+        luuDuLieu();
+        veLai();
+        thongBao("Đã đưa đợt lịch sử ra bảng chính để bạn tiếp tục chỉnh sửa.", "xanh");
       }else if(hanh === "saochep"){
         saoChepDanhSach(dot.items, `đợt ${dinhDangThoiGian(dot.taoLuc)}`);
       }else if(hanh === "xoadot"){
-        if(!confirm("Bạn chắc chắn muốn xoá đợt này không?")) return;
+        if(!confirm(`Bạn chắc chắn muốn xoá đợt ${dinhDangThoiGian(dot.taoLuc)} không? (Không thể khôi phục)`)) return;
         lichSu = lichSu.filter(d => d.id !== idDot);
-
-        // Sau khi xoá lịch sử, cần làm sạch hiện tại (đề phòng)
-        lamSachDuLieu();
         luuDuLieu();
         veLai();
-        thongBao("Đã xoá đợt khỏi lịch sử.", "xanh");
+        thongBao(`Đã xoá đợt <b>${escapeHtml(dinhDangThoiGian(dot.taoLuc))}</b>.`, "xanh");
       }
     });
 
+    // Xoá toàn bộ lịch sử
     document.getElementById("btnXoaLichSu").addEventListener("click", () => {
       if(lichSu.length === 0){
         thongBao("Lịch sử đang trống.", "vang");
@@ -985,7 +994,11 @@
       thongBao("Đã xoá toàn bộ lịch sử.", "xanh");
     });
 
-    document.getElementById("btnDongModal").addEventListener("click", dongModal);
+    // Đóng modal (nút / click nền / ESC)
+    btnDongModal.addEventListener("click", (e) => {
+      e.preventDefault();
+      dongModal();
+    });
     elModalNen.addEventListener("click", (e) => {
       if(e.target === elModalNen) dongModal();
     });
